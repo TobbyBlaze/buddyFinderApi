@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Storage;
 // use App\Models\User;
-// use App\Models\Admin;
 
 use Illuminate\Support\Facades\Input;
 
@@ -42,47 +41,6 @@ Route::group([ 'prefix' => 'auth'], function (){
         Route::post('updateUser', 'UserController@updateUser');
         Route::post('updateUserPassword', 'UserController@updateUserPassword');
 
-        //Journals
-        // Route::get('/', 'JournalController@index');
-        // Route::get('journals', 'JournalController@index');
-        // Route::get('journals/{id}', 'JournalController@show');
-        // Route::resource('show', 'JournalController');
-        // Route::post('storejournal', 'JournalController@store');
-        // Route::any('updatejournal/{id}', 'JournalController@update');
-        // Route::any('deletejournal/{id}', 'JournalController@destroy');
-
-        //Trades
-        // Route::get('/', 'TradeController@index');
-        Route::get('trades', 'TradeController@index');
-        // Route::get('trades/{id}', 'TradelController@show');
-        // Route::resource('showtrades', 'TradeController');
-        // Route::post('storetrade', 'TradeController@store');
-        // Route::any('updatetrade/{id}', 'TradeController@update');
-        // Route::any('deletetrade/{id}', 'TradeController@destroy');
-
-
-
-        //Reset password
-        // Route::group(['prefix' => 'password'], function () {
-        //     Route::post('create', 'PasswordResetController@create');
-        //     Route::get('find/{token}', 'PasswordResetController@find');
-        //     Route::post('reset', 'PasswordResetController@reset');
-        // });
-
-        //Checkout
-        Route::post('/charge', 'CheckoutController@charge');
-
-    });
-
-    //Admin
-    Route::group(['middleware' => ['auth:admin-api'], 'namespace' => 'App\Http\Controllers'], function() {
-        Route::get('a-logout', 'API\AuthController@admin_logout');
-        Route::get('getadmin', 'API\AuthController@getAdmin');
-
-        //Trades
-        Route::post('storetrade', 'TradeController@store');
-        Route::any('updatetrade/{id}', 'TradeController@update');
-        Route::any('deletetrade/{id}', 'TradeController@destroy');
     });
 
 });
@@ -97,16 +55,6 @@ Route::group([
     Route::post('reset', 'PasswordResetController@reset');
 });
 
-//Admin Reset password
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'password'
-], function () {
-    Route::post('adminCreate', 'AdminPasswordResetController@create');
-    Route::get('adminFind/{token}', 'AdminPasswordResetController@find');
-    Route::post('adminReset', 'AdminPasswordResetController@reset');
-});
-
 // Account activation
 Route::group([
     'prefix' => 'auth'
@@ -118,22 +66,12 @@ Route::group([
     Route::get('adminSignup/activate/{token}', 'API\AuthController@adminSignupActivate');
     Route::get('courierSignup/activate/{token}', 'API\AuthController@courierSignupActivate');
 
-    // Route::group([
-    //   'middleware' => 'auth:api'
-    // ], function() {
-    //     Route::get('logout', 'AuthController@logout');
-    //     Route::get('user', 'AuthController@user');
-    // });
 });
 
-//Search
-Route::any ( 'searchGoods', 'FindController@goods');
-Route::any ( 'searchAds', 'FindController@ads');
-Route::any ( 'searchSellers', 'FindController@sellers');
-
-//Checkout test
-Route::post('/charge', 'CheckoutController@charge');
-
+// Search
+// Route::any ( 'searchGoods', 'FindController@goods');
+// Route::any ( 'searchAds', 'FindController@ads');
+// Route::any ( 'searchSellers', 'FindController@sellers');
 
 // Route::get('location', function () {
 
