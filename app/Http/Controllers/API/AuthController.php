@@ -106,7 +106,7 @@ class AuthController extends ResponseController
 
         // $credentials['email'] = Crypt::encryptString($credentials['email']);
 
-        $credentials['active'] = true;
+        // $credentials['active'] = true;
         // $credentials['deleted_at'] = null;
 
         if(!Auth::attempt($credentials)){
@@ -114,6 +114,7 @@ class AuthController extends ResponseController
             return $this->sendError($error, 401);
         }
         $user = $request->user();
+        $user->active = true;
         $success['token'] =  $user->createToken('token')->accessToken;
         return $this->sendResponse($success);
     }
