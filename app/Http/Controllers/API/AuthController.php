@@ -152,6 +152,51 @@ class AuthController extends ResponseController
         }
     }
 
+    // make yourself visible
+    public function makeView(Request $request)
+    {
+        //$id = $request->user()->id;
+        $user = $request->user();
+        if($user){
+            $user->view = true;
+            return $this->sendResponse($user);
+        }
+        else{
+            $error = "user not found";
+            return $this->sendResponse($error);
+        }
+    }
+
+    //getfriend
+    public function getFriend(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'q' => 'required|string'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors());
+        }
+
+        $q = $request->input('q');
+        $friend = User::where ( 'name', 'LIKE', '%' . $q . '%' )
+        ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
+        ->where ( 'view', true )
+        ->get();
+
+        $find_data = [
+            'q' => $q,
+            'friend' => $friend,
+        ];
+
+        // if($q != null){
+        //     if (count($goods)>0){
+        //         return response()->json($find_data);
+        //     }
+        // }
+        return response()->json($find_data);
+    }
+
     //Activate user account
     public function signupActivate($token)
     {

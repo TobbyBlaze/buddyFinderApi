@@ -37,10 +37,9 @@ Route::group([ 'prefix' => 'auth'], function (){
         Route::get('logout', 'API\AuthController@logout');
 
         Route::get('/', 'API\AuthController@getUser');
-        Route::get('profile', 'UserController@index');
-        Route::post('updateUser', 'UserController@updateUser');
-        Route::post('updateUserPassword', 'UserController@updateUserPassword');
-
+        Route::get('visible', 'API\AuthController@makeView');
+        Route::post('getfriend', 'API\AuthController@getFriend');
+        
     });
 
 });
@@ -59,19 +58,8 @@ Route::group([
 Route::group([
     'prefix' => 'auth'
 ], function () {
-    // Route::post('login', 'AuthController@login');
-    // Route::post('signup', 'AuthController@signup');
     Route::get('signup/activate/{token}', 'API\AuthController@signupActivate');
-    Route::get('sellerSignup/activate/{token}', 'API\AuthController@sellerSignupActivate');
-    Route::get('adminSignup/activate/{token}', 'API\AuthController@adminSignupActivate');
-    Route::get('courierSignup/activate/{token}', 'API\AuthController@courierSignupActivate');
-
 });
-
-// Search
-// Route::any ( 'searchGoods', 'FindController@goods');
-// Route::any ( 'searchAds', 'FindController@ads');
-// Route::any ( 'searchSellers', 'FindController@sellers');
 
 // Route::get('location', function () {
 
