@@ -224,9 +224,9 @@ class AuthController extends ResponseController
         }
 
         $q = $request->input('q');
-        $friend = User::where ( 'pin', 'LIKE', '%' . $q . '%' )
+        $friend = User::where ( 'pin', 'LIKE', $q )
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
-        // ->where ( 'view', true )
+        ->where ( 'view', '=', true )
         ->get();
 
         $found_data = [
