@@ -183,8 +183,9 @@ class AuthController extends ResponseController
     {
         //$id = $request->user()->id;
         $user = $request->user();
+        $pinName = substr($user->name, -4);
         if($user){
-            $user->pin = $user->name.Str::random(8);
+            $user->pin = $pinName.Str::random(8);
             return $this->sendResponse($user);
         }
         else{
