@@ -85,6 +85,8 @@ class AuthController extends ResponseController
             // $user->notify(new SignupActivate($user));
 
             $success['message'] = "Registration successfull...";
+            $user->active = true;
+            $user->save();
             return $this->sendResponse($success);
         }
         else{

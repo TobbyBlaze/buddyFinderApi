@@ -51,6 +51,7 @@ class User extends Authenticatable
         'countryName',
         'countryCode',
         'cityName',
+        'active',
         'view'
     ];
 
