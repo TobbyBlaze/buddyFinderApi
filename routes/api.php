@@ -38,6 +38,7 @@ Route::group([ 'prefix' => 'auth'], function (){
 
         Route::get('/', 'API\AuthController@getUser');
         Route::get('visible', 'API\AuthController@makeView');
+        Route::get('invisible', 'API\AuthController@noView');
         Route::get('changepin', 'API\AuthController@pin');
         Route::post('getfriend', 'API\AuthController@getFriend');
 

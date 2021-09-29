@@ -67,7 +67,8 @@ class AuthController extends ResponseController
         $input['password'] = bcrypt($input['password']);
         // $input['activation_token'] = str_random(60);
         $input['activation_token'] = sha1(time());
-        $input['pin'] = $input['name'].Str::random(8);
+        $pinName = substr($input['name'], -4);
+        $input['pin'] = $pinName.Str::random(8);
         $input['ip'] = $ipaddress;
         if($location){
             $input['latitude'] = $location->latitude;
@@ -83,11 +84,11 @@ class AuthController extends ResponseController
 
             // $user->notify(new SignupActivate($user));
 
-            $success['message'] = "Registration successfull..";
+            $success['message'] = "Registration successfull...";
             return $this->sendResponse($success);
         }
         else{
-            $error = "Sorry! Registration is not successfull.";
+            $error = "Sorry! Registration is not successfull...";
             return $this->sendError($error, 401);
         }
 
@@ -170,6 +171,21 @@ class AuthController extends ResponseController
                 $user->view = 0;
             }
 
+            return $this->sendResponse($user);
+        }
+        else{
+            $error = "user not found";
+            return $this->sendResponse($error);
+        }
+    }
+
+    // make yourself invisible
+    public function noView(Request $request)
+    {
+        //$id = $request->user()->id;
+        $user = $request->user();
+        if($user){
+            $user->view = false;
             return $this->sendResponse($user);
         }
         else{
