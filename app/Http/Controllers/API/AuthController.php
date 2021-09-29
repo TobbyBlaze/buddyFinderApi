@@ -165,7 +165,7 @@ class AuthController extends ResponseController
         }
     }
 
-    // make yourself visible
+    // make yourself visible or invisible
     public function makeView(Request $request)
     {
         //$id = $request->user()->id;
@@ -180,6 +180,21 @@ class AuthController extends ResponseController
             }
             $user->save();
 
+            return $this->sendResponse($user);
+        }
+        else{
+            $error = "user not found";
+            return $this->sendResponse($error);
+        }
+    }
+
+    // make yourself visible
+    public function aView(Request $request)
+    {
+        //$id = $request->user()->id;
+        $user = $request->user();
+        if($user){
+            $user->view = true;
             return $this->sendResponse($user);
         }
         else{
@@ -234,9 +249,9 @@ class AuthController extends ResponseController
         $q = $request->input('q');
         $friend = User::where([
             ['pin', 'LIKE', $q],
+            ['active', '=', true],
             ['view', '=', true]])
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
-        // ->where ( 'view', '=', true )
         ->get();
 
         $found_data = [
@@ -244,12 +259,14 @@ class AuthController extends ResponseController
             'friend' => $friend,
         ];
 
-        // if($q != null){
-        //     if (count($goods)>0){
-        //         return response()->json($find_data);
-        //     }
-        // }
-        return response()->json($found_data);
+        if (count($goods)>0){
+            return response()->json($found_data);
+        }else{
+            $error = "Buddy not found";
+            return $this->sendResponse($error);
+        }
+
+        // return response()->json($found_data);
     }
 
     //Activate user account
