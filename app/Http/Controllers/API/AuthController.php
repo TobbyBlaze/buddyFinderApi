@@ -118,11 +118,12 @@ class AuthController extends ResponseController
         }
         $user = $request->user();
         if($user){
+            // $user->active = true;
+            $success['token'] =  $user->createToken('token')->accessToken;
             $user->active = true;
+            return $this->sendResponse($success);
         }
-        $success['token'] =  $user->createToken('token')->accessToken;
-        // $user->active = true;
-        return $this->sendResponse($success);
+
     }
 
     //logout
