@@ -164,7 +164,12 @@ class AuthController extends ResponseController
         //$id = $request->user()->id;
         $user = $request->user();
         if($user){
-            $user->view = !($user->view);
+            if($user->view == false){
+                $user->view = true;
+            }else{
+                $user->view = false;
+            }
+
             return $this->sendResponse($user);
         }
         else{
@@ -200,7 +205,7 @@ class AuthController extends ResponseController
         }
 
         $q = $request->input('q');
-        $friend = User::where ( 'pin', '=', $q )
+        $friend = User::where ( 'pin', 'LIKE', '%' . $q . '%' )
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
         ->where ( 'view', true )
         ->get();
