@@ -118,10 +118,8 @@ class AuthController extends ResponseController
         }
         $user = $request->user();
         if($user){
-            $user->active = true;
-            $user->view = true;
-            $success['token'] =  $user->createToken('token')->accessToken;
             // $user->active = true;
+            $success['token'] =  $user->createToken('token')->accessToken;
             return $this->sendResponse($success);
         }
 
@@ -131,14 +129,14 @@ class AuthController extends ResponseController
     public function logout(Request $request)
     {
         $user = $request->user();
-        $user->active = false;
+        // $user->active = false;
         $isUser = $request->user()->token()->revoke();
         if($isUser){
             $success['message'] = "Successfully logged out.";
             return $this->sendResponse($success);
         }
         else{
-            $user->active = true;
+            // $user->active = true;
             $error = "Something went wrong.";
             return $this->sendResponse($error);
         }
@@ -166,7 +164,7 @@ class AuthController extends ResponseController
         //$id = $request->user()->id;
         $user = $request->user();
         if($user){
-            $user->view = true;
+            $user->view = !($user->view);
             return $this->sendResponse($user);
         }
         else{
@@ -202,7 +200,7 @@ class AuthController extends ResponseController
         }
 
         $q = $request->input('q');
-        $friend = User::where ( 'pin', $q )
+        $friend = User::where ( 'pin', '=', $q )
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
         ->where ( 'view', true )
         ->get();
