@@ -16,7 +16,7 @@ use App\Models\User;
 // use App\Courier;
 use Validator;
 
-// use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Crypt;
 
 use App\Notifications\SignupActivate;
 // use App\Notifications\sellerSignupActivate;
@@ -197,7 +197,7 @@ class AuthController extends ResponseController
             return $this->sendError($validator->errors());
         }
 
-        $q = $request->input('q');
+        $q = Crypt::decryptString($request->input('q'));
         $friend = User::where ( 'pin', $q )
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
         ->where ( 'view', true )
