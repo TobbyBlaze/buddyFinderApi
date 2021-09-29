@@ -259,7 +259,7 @@ class AuthController extends ResponseController
             'friend' => $friend,
         ];
 
-        if (count($goods)>0){
+        if (count($friend)>0){
             return response()->json($found_data);
         }else{
             $error = "Buddy not found";
