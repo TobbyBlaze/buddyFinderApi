@@ -50,7 +50,8 @@ class User extends Authenticatable
         'longitude',
         'countryName',
         'countryCode',
-        'cityName'
+        'cityName',
+        'view'
     ];
 
     /**
