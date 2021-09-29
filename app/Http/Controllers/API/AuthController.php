@@ -164,10 +164,10 @@ class AuthController extends ResponseController
         //$id = $request->user()->id;
         $user = $request->user();
         if($user){
-            if($user->view == false){
+            if($user->view == 0){
                 $user->view = true;
             }else{
-                $user->view = false;
+                $user->view = 0;
             }
 
             return $this->sendResponse($user);
