@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ResponseController as ResponseController;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +34,7 @@ class AuthController extends ResponseController
     public function signup(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'name' => ['string', 'max:20', 'min:2'],
+            'name' => ['string', 'max:20', 'min:2'],
             // 'last_name' => ['string', 'max:20', 'min:2'],
             'email' => ['required', 'string', 'email', 'max:40', 'unique:users'],
             'password' => ['required'],
@@ -65,6 +67,7 @@ class AuthController extends ResponseController
         $input['password'] = bcrypt($input['password']);
         // $input['activation_token'] = str_random(60);
         $input['activation_token'] = sha1(time());
+        $input['pin'] = $input['name'].Str::random(8);
         $input['ip'] = $ipaddress;
         if($location){
             $input['latitude'] = $location->latitude;
@@ -167,6 +170,21 @@ class AuthController extends ResponseController
         }
     }
 
+    // change pin
+    public function pin(Request $request)
+    {
+        //$id = $request->user()->id;
+        $user = $request->user();
+        if($user){
+            $user->pin = $user->name.Str::random(8);
+            return $this->sendResponse($user);
+        }
+        else{
+            $error = "user not found";
+            return $this->sendResponse($error);
+        }
+    }
+
     //getfriend
     public function getFriend(Request $request)
     {
@@ -179,12 +197,12 @@ class AuthController extends ResponseController
         }
 
         $q = $request->input('q');
-        $friend = User::where ( 'name', 'LIKE', '%' . $q . '%' )
-        ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
+        $friend = User::where ( 'pin', $q )
+        // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
         ->where ( 'view', true )
         ->get();
 
-        $find_data = [
+        $found_data = [
             'q' => $q,
             'friend' => $friend,
         ];
@@ -194,7 +212,7 @@ class AuthController extends ResponseController
         //         return response()->json($find_data);
         //     }
         // }
-        return response()->json($find_data);
+        return response()->json($found_data);
     }
 
     //Activate user account
