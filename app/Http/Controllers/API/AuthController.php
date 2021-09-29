@@ -118,9 +118,9 @@ class AuthController extends ResponseController
         }
         $user = $request->user();
         if($user){
-            // $user->active = true;
-            $success['token'] =  $user->createToken('token')->accessToken;
             $user->active = true;
+            $success['token'] =  $user->createToken('token')->accessToken;
+            // $user->active = true;
             return $this->sendResponse($success);
         }
 
@@ -138,6 +138,7 @@ class AuthController extends ResponseController
         }
         else{
             $user->active = true;
+            $user->view = true;
             $error = "Something went wrong.";
             return $this->sendResponse($error);
         }
