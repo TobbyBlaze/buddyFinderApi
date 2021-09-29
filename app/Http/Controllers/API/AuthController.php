@@ -119,7 +119,8 @@ class AuthController extends ResponseController
         }
         $user = $request->user();
         if($user){
-            // $user->active = true;
+            $user->active = true;
+            $user->save();
             $success['token'] =  $user->createToken('token')->accessToken;
             return $this->sendResponse($success);
         }
@@ -130,14 +131,16 @@ class AuthController extends ResponseController
     public function logout(Request $request)
     {
         $user = $request->user();
-        // $user->active = false;
+        $user->active = false;
+        $user->save();
         $isUser = $request->user()->token()->revoke();
         if($isUser){
             $success['message'] = "Successfully logged out.";
             return $this->sendResponse($success);
         }
         else{
-            // $user->active = true;
+            $user->active = true;
+            $user->save();
             $error = "Something went wrong.";
             return $this->sendResponse($error);
         }
@@ -165,13 +168,14 @@ class AuthController extends ResponseController
         //$id = $request->user()->id;
         $user = $request->user();
         if($user){
-            $user->view = true;
+            // $user->view = true;
 
-            // if($user->view == 0){
-            //     $user->view = true;
-            // }else{
-            //     $user->view = 0;
-            // }
+            if($user->view == 0){
+                $user->view = true;
+            }else{
+                $user->view = 0;
+            }
+            $user->save();
 
             return $this->sendResponse($user);
         }
@@ -204,6 +208,7 @@ class AuthController extends ResponseController
         $pinName = substr($user->name, -4);
         if($user){
             $user->pin = $pinName.Str::random(8);
+            $user->save();
             return $this->sendResponse($user);
         }
         else{
