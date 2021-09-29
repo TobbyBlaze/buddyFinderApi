@@ -197,7 +197,7 @@ class AuthController extends ResponseController
             return $this->sendError($validator->errors());
         }
 
-        $q = Crypt::decryptString($request->input('q'));
+        $q = Crypt::encryptString($request->input('q'));
         $friend = User::where ( 'pin', $q )
         // ->orWhere ( 'email', 'LIKE', '%' . $q . '%' )
         ->where ( 'view', true )
