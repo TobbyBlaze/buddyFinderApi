@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('countryName')->nullable();
             $table->string('countryCode')->nullable();
             $table->string('cityName')->nullable();
-            // $table->boolean('active')->default(false);
+            $table->boolean('active')->default(false);
             $table->boolean('view')->default(false);
             $table->string('activation_token')->nullable();
             $table->rememberToken();
